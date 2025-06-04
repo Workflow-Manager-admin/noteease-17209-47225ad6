@@ -24,6 +24,13 @@ export default function NoteForm({ note, onSubmit }: NoteFormProps) {
     setCategories(categories.filter((c) => c !== category));
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && newCategory) {
+      e.preventDefault();
+      addCategory();
+    }
+  };
+
   return (
     <Form
       method={note ? "put" : "post"}
@@ -70,7 +77,10 @@ export default function NoteForm({ note, onSubmit }: NoteFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="newCategory"
+          className="block text-sm font-medium text-gray-700"
+        >
           Categories
         </label>
         <div className="mt-2 flex flex-wrap gap-2">
@@ -84,6 +94,7 @@ export default function NoteForm({ note, onSubmit }: NoteFormProps) {
                 type="button"
                 onClick={() => removeCategory(category)}
                 className="ml-2 text-blue-500 hover:text-blue-700"
+                aria-label={`Remove category ${category}`}
               >
                 ×
               </button>
@@ -93,8 +104,10 @@ export default function NoteForm({ note, onSubmit }: NoteFormProps) {
         <div className="mt-2 flex gap-2">
           <input
             type="text"
+            id="newCategory"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="Add category"
             className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
           />
@@ -102,6 +115,7 @@ export default function NoteForm({ note, onSubmit }: NoteFormProps) {
             type="button"
             onClick={addCategory}
             className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            disabled={!newCategory}
           >
             Add
           </button>
