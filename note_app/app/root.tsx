@@ -48,6 +48,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    initializeStorage();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Outlet />
